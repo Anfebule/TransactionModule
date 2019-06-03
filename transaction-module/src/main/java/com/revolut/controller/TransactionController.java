@@ -1,13 +1,14 @@
 package com.revolut.controller;
 
 import com.revolut.model.Account;
+import com.revolut.model.TransactionResult;
 import com.revolut.service.AccountService;
 
 public class TransactionController {
 
-    public String transfer(Integer recipientAccountNumber, Integer senderAccountNumber, Integer amount){
+    public TransactionResult transfer(Integer recipientAccountNumber, Integer senderAccountNumber, Integer amount){
 
-        String message;
+        TransactionResult transactionResult = new TransactionResult();
         AccountService accountService = new AccountService();
         Account recipientAccount = accountService.getAccountById(recipientAccountNumber);
         Account senderAccount = accountService.getAccountById(senderAccountNumber);
@@ -20,12 +21,13 @@ public class TransactionController {
             accountService.updateAccountBalance(recipientAccount);
             accountService.closeSession();
 
-            message = "transaction successful";
+            transactionResult.setMessage("transaction successful");
         } else {
-            message = "transaction failed";
+            transactionResult.setMessage("transaction failed");
+            transactionResult.setDescription("Account not found");
         }
         accountService.closeSession();
 
-        return message;
+        return transactionResult;
     }
 }

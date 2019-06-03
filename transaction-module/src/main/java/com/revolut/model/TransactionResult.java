@@ -1,6 +1,6 @@
 package com.revolut.model;
 
-public class TransationError {
+public class TransactionResult {
 
     private String message;
     private String description;

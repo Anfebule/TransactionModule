@@ -1,5 +1,6 @@
 package com.revolut;
 
+import com.revolut.model.TransactionResult;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +12,7 @@ import javax.ws.rs.client.WebTarget;
 
 import static org.junit.Assert.assertEquals;
 
-public class TransactionControllerTest {
+public class TransactionRestServiceTest {
     private HttpServer server;
     private WebTarget target;
 
@@ -34,12 +35,12 @@ public class TransactionControllerTest {
      */
     @Test
     public void testTransfer() {
-        String transferResponseMsg = target.path("transfer")
+        TransactionResult transferResponseMsg = target.path("transaction/transfer")
                 .queryParam("recipientAccountNumber", 0)
                 .queryParam("senderAccountNumber", 1)
                 .queryParam("amount", 100)
-                .request().get(String.class);
-        assertEquals("transaction successful", transferResponseMsg);
+                .request().get(TransactionResult.class);
+        assertEquals("transaction successful", transferResponseMsg.getMessage());
     }
 
     /**
@@ -47,11 +48,11 @@ public class TransactionControllerTest {
      */
     @Test
     public void testTransferFailed() {
-        String transferResponseMsg = target.path("transfer")
+        TransactionResult transferResponseMsg = target.path("transaction/transfer")
                 .queryParam("recipientAccountNumber", 10)
                 .queryParam("senderAccountNumber", 11)
                 .queryParam("amount", 100)
-                .request().get(String.class);
-        assertEquals("Transaction failed", transferResponseMsg);
+                .request().get(TransactionResult.class);
+        assertEquals("transaction failed", transferResponseMsg.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package com.revolut.restController;
 
 import com.revolut.controller.TransactionController;
+import com.revolut.model.TransactionResult;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 /**
  * Root resource (exposed at "transfer" path)
  */
-@Path("transfer")
-public class TransferRestService {
+@Path("transaction")
+public class TransactionRestService {
 
     /**
      * Method handling transfer requests.
@@ -20,10 +21,11 @@ public class TransferRestService {
      * @return String that returns if transaction is successful or not.
      */
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getClient(@QueryParam("recipientAccountNumber") Integer recipientAccountNumber,
-                            @QueryParam("senderAccountNumber") Integer senderAccountNumber,
-                            @QueryParam("amount") Integer amount){
+    @Path("transfer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public TransactionResult transfer(@QueryParam("recipientAccountNumber") Integer recipientAccountNumber,
+                                      @QueryParam("senderAccountNumber") Integer senderAccountNumber,
+                                      @QueryParam("amount") Integer amount){
         TransactionController transactionController = new TransactionController();
         return transactionController.transfer(recipientAccountNumber, senderAccountNumber, amount);
     }
