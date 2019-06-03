@@ -11,7 +11,7 @@ import javax.ws.rs.client.WebTarget;
 
 import static org.junit.Assert.assertEquals;
 
-public class TransferTest {
+public class TransactionControllerTest {
     private HttpServer server;
     private WebTarget target;
 
@@ -34,8 +34,12 @@ public class TransferTest {
      */
     @Test
     public void testTransfer() {
-        String transferResponseMsg = target.path("transfer").request().get(String.class);
-        assertEquals("Transaction successful", transferResponseMsg);
+        String transferResponseMsg = target.path("transfer")
+                .queryParam("recipientAccountNumber", 0)
+                .queryParam("senderAccountNumber", 1)
+                .queryParam("amount", 100)
+                .request().get(String.class);
+        assertEquals("transaction successful", transferResponseMsg);
     }
 
     /**
@@ -43,7 +47,11 @@ public class TransferTest {
      */
     @Test
     public void testTransferFailed() {
-        String transferResponseMsg = target.path("transfer").request().get(String.class);
+        String transferResponseMsg = target.path("transfer")
+                .queryParam("recipientAccountNumber", 10)
+                .queryParam("senderAccountNumber", 11)
+                .queryParam("amount", 100)
+                .request().get(String.class);
         assertEquals("Transaction failed", transferResponseMsg);
     }
 }
