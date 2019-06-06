@@ -1,5 +1,6 @@
-package com.revolut;
+package com.revolut.controller;
 
+import com.revolut.Main;
 import com.revolut.model.TransactionResult;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
@@ -12,7 +13,7 @@ import javax.ws.rs.client.WebTarget;
 
 import static org.junit.Assert.assertEquals;
 
-public class TransactionRestServiceTest {
+public class TransactionRestControllerTest {
     private HttpServer server;
     private WebTarget target;
 
@@ -31,7 +32,7 @@ public class TransactionRestServiceTest {
     }
 
     /**
-     * Test to see transaction is successful.
+     * Test to check transaction is successful.
      */
     @Test
     public void testTransfer() {
@@ -44,7 +45,7 @@ public class TransactionRestServiceTest {
     }
 
     /**
-     * Test to see transaction failed.
+     * Test to check transaction failed.
      */
     @Test
     public void testTransferFailed() {

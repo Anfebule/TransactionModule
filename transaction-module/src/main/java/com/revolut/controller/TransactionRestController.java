@@ -1,8 +1,9 @@
-package com.revolut.restController;
+package com.revolut.controller;
 
-import com.revolut.controller.TransactionController;
+import com.revolut.service.TransactionService;
 import com.revolut.model.TransactionResult;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,7 +14,10 @@ import javax.ws.rs.core.MediaType;
  * Root resource (exposed at "transfer" path)
  */
 @Path("transaction")
-public class TransactionRestService {
+public class TransactionRestController {
+
+    @Inject
+    private TransactionService transactionService;
 
     /**
      * Method handling transfer requests.
@@ -25,8 +29,7 @@ public class TransactionRestService {
     @Produces(MediaType.APPLICATION_JSON)
     public TransactionResult transfer(@QueryParam("recipientAccountNumber") Integer recipientAccountNumber,
                                       @QueryParam("senderAccountNumber") Integer senderAccountNumber,
-                                      @QueryParam("amount") Integer amount){
-        TransactionController transactionController = new TransactionController();
-        return transactionController.transfer(recipientAccountNumber, senderAccountNumber, amount);
+                                      @QueryParam("amount") Double amount){
+        return transactionService.transfer(recipientAccountNumber, senderAccountNumber, amount);
     }
 }

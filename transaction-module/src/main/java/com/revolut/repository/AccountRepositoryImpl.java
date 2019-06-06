@@ -1,4 +1,4 @@
-package com.revolut.service;
+package com.revolut.repository;
 
 import com.revolut.model.Account;
 import com.revolut.model.User;
@@ -8,10 +8,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import javax.transaction.Transactional;
+
 /**
  * Provides CRUD methods needed within the app for Account entity
  */
-public class AccountService {
+public class AccountRepositoryImpl implements AccountRepository {
 
     private static SessionFactory factory;
     private Session session;
@@ -19,10 +21,9 @@ public class AccountService {
     /**
      * Initialize hibernate session
      */
-    public AccountService() {
+    public AccountRepositoryImpl() {
         try {
             factory = new Configuration().configure().buildSessionFactory();
-            session = factory.openSession();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -33,10 +34,11 @@ public class AccountService {
     /**
      * Initializes database with sample data
      */
-    private void initializeDatabase(int recordAmount){
-        for (int i = 0; i < recordAmount; i++){
+    private void initializeDatabase(int recordsAmount){
+
+        for (int i = 0; i < recordsAmount; i++){
             User user = new User("User"+i, "3015555");
-            Account account = new Account(i,1000, user);
+            Account account = new Account(i, Double.valueOf("1000"), user);
             addAccount(account);
         }
     }
@@ -51,6 +53,7 @@ public class AccountService {
         Integer accountId = null;
 
         try {
+            session = factory.openSession();
             tx = session.beginTransaction();
             accountId = (Integer) session.save(account);
             tx.commit();
@@ -59,6 +62,8 @@ public class AccountService {
                 tx.rollback();
             }
             e.printStackTrace();
+        } finally {
+            session.close();
         }
         return accountId;
     }
@@ -71,6 +76,7 @@ public class AccountService {
         Transaction tx = null;
 
         try {
+            session = factory.openSession();
             tx = session.beginTransaction();
             Account accountFound = session.get(Account.class, account.getAccountNumber());
             accountFound.setBalance(account.getBalance());
@@ -82,6 +88,8 @@ public class AccountService {
             }
             e.printStackTrace();
             throw e;
+        } finally {
+            session.close();
         }
     }
 
@@ -95,6 +103,7 @@ public class AccountService {
         Account accountFound;
 
         try {
+            session = factory.openSession();
             tx = session.beginTransaction();
             accountFound = session.get(Account.class, accountNumber);
             tx.commit();
@@ -104,11 +113,9 @@ public class AccountService {
             }
             e.printStackTrace();
             throw e;
+        } finally {
+            session.close();
         }
         return accountFound;
-    }
-
-    public void closeSession(){
-        session.close();
     }
 }

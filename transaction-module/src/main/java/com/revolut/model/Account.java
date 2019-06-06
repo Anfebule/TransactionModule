@@ -12,7 +12,7 @@ public class Account {
     @Id
     private Integer accountNumber;
     @NotNull
-    private Integer balance;
+    private Double balance;
     @ManyToOne(cascade = CascadeType.ALL)
     @NotNull
     private User user;
@@ -20,7 +20,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(Integer accountNumber, Integer balance, User user) {
+    public Account(Integer accountNumber, Double balance, User user) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.user = user;
@@ -34,11 +34,11 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

@@ -1,6 +1,11 @@
 package com.revolut;
 
+import com.revolut.service.TransactionService;
+import com.revolut.service.TransactionServiceImpl;
+import com.revolut.repository.AccountRepository;
+import com.revolut.repository.AccountRepositoryImpl;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -22,7 +27,13 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.revolut package
-        final ResourceConfig rc = new ResourceConfig().packages("com.revolut");
+        final ResourceConfig rc = new ResourceConfig().packages("com.revolut")
+                .register(new AbstractBinder() {
+                              @Override
+                              protected void configure() {
+                                  bind(TransactionServiceImpl.class).to(TransactionService.class);
+                                  bind(AccountRepositoryImpl.class).to(AccountRepository.class);
+                              }});
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
