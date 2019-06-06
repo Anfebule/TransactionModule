@@ -42,11 +42,17 @@ public class AccountRepositoryTest {
         accountRepository = new AccountRepositoryImpl();
     }
 
+    /**
+     * Test to check if account is added
+     */
     @Test
     public void addAccount(){
         assertNotNull(accountRepository.addAccount(account));
     }
 
+    /**
+     * Test to check if account balance is updated
+     */
     @Test
     public void updateAccountBalance (){
         accountRepository.addAccount(account);
@@ -56,6 +62,9 @@ public class AccountRepositoryTest {
         assertEquals(accountFound.getBalance(), account.getBalance());
     }
 
+    /**
+     * Test to check if account is found
+     */
     @Test
     public void  getAccountById (){
         accountRepository.addAccount(account);

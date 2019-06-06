@@ -8,11 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import javax.transaction.Transactional;
-
-/**
- * Provides CRUD methods needed within the app for Account entity
- */
 public class AccountRepositoryImpl implements AccountRepository {
 
     private static SessionFactory factory;
@@ -43,11 +38,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
     }
 
-    /**
-     * Create a new account
-     * @param account account to be created
-     * @return account number
-     */
     public Integer addAccount (Account account){
         Transaction tx = null;
         Integer accountId = null;
@@ -68,10 +58,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accountId;
     }
 
-    /**
-     * Update account balance
-     * @param account account to be updated
-     */
     public void updateAccountBalance (Account account){
         Transaction tx = null;
 
@@ -93,11 +79,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
     }
 
-    /**
-     * Gets account by id
-     * @param accountNumber account number to search for
-     * @return account found
-     */
     public Account getAccountById (Integer accountNumber) {
         Transaction tx = null;
         Account accountFound;
