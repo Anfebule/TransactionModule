@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -16,11 +15,8 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 public class AccountRepositoryTest {
 
-    private User user;
-
     private Account account;
 
-    @Mock
     private AccountRepositoryImpl accountRepository;
 
     @BeforeEach
@@ -30,12 +26,11 @@ public class AccountRepositoryTest {
 
     @Before
     public void setUp(){
-        user = new User();
+        User user = new User();
         user.setName("Andres");
         user.setPhone("301555");
 
         account = new Account();
-        account.setAccountNumber(100);
         account.setBalance(Double.valueOf("1000"));
         account.setUser(user);
 
@@ -43,18 +38,22 @@ public class AccountRepositoryTest {
     }
 
     /**
-     * Test to check if account is added
+     * Test to check if account is added.
+     * Account numbers are hard-coded for the sake of this test (No endpoint yet to get already created accounts)
      */
     @Test
     public void addAccount(){
+        account.setAccountNumber(100);
         assertNotNull(accountRepository.addAccount(account));
     }
 
     /**
      * Test to check if account balance is updated
+     * Account numbers are hard-coded for the sake of this test (No endpoint yet to get already created accounts)
      */
     @Test
     public void updateAccountBalance (){
+        account.setAccountNumber(101);
         accountRepository.addAccount(account);
         accountRepository.updateAccountBalance(account);
 
@@ -64,9 +63,11 @@ public class AccountRepositoryTest {
 
     /**
      * Test to check if account is found
+     * Account numbers are hard-coded for the sake of this test (No endpoint yet to get already created accounts)
      */
     @Test
     public void  getAccountById (){
+        account.setAccountNumber(102);
         accountRepository.addAccount(account);
         assertNotNull(accountRepository.getAccountById(account.getAccountNumber()));
     }

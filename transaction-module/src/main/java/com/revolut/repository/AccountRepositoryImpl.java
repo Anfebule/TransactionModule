@@ -8,36 +8,32 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+
 public class AccountRepositoryImpl implements AccountRepository {
 
-    private static SessionFactory factory;
+    //Creates hibernate session
+    private static SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private static boolean alreadyExecuted = false;
     private Session session;
-
-    /**
-     * Initialize hibernate session
-     */
-    public AccountRepositoryImpl() {
-        try {
-            factory = new Configuration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-        initializeDatabase(2);
-    }
 
     /**
      * Initializes database with sample data
      */
-    private void initializeDatabase(int recordsAmount){
-
-        for (int i = 0; i < recordsAmount; i++){
-            User user = new User("User"+i, "3015555");
-            Account account = new Account(i, Double.valueOf("1000"), user);
-            addAccount(account);
+    @PostConstruct
+    private void initializeDatabase(){
+        if (!alreadyExecuted) {
+            for (int i = 0; i < 2; i++) {
+                User user = new User("User" + i, "3015555");
+                Account account = new Account(i, Double.valueOf("1000"), user);
+                addAccount(account);
+            }
+            alreadyExecuted = true;
         }
     }
 
+    @Transactional
     public Integer addAccount (Account account){
         Transaction tx = null;
         Integer accountId = null;
@@ -58,6 +54,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accountId;
     }
 
+    @Transactional
     public void updateAccountBalance (Account account){
         Transaction tx = null;
 
@@ -79,6 +76,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
     }
 
+    @Transactional
     public Account getAccountById (Integer accountNumber) {
         Transaction tx = null;
         Account accountFound;

@@ -28,7 +28,7 @@ public class TransactionRestControllerTest {
 
     @After
     public void tearDown() {
-        server.stop();
+        server.shutdown();
     }
 
     /**
