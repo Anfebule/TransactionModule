@@ -14,6 +14,7 @@ Clone the repo, start application with `mvn clean exec:java` command, enter foll
 `http://localhost:8080/revolut/transaction/transfer?recipientAccountNumber=0&senderAccountNumber=1&amount=100`
 
 Where:
+
 |Param                 |Description                    |
 |----------------------|-------------------------------|
 |recipientAccountNumber|recipient account number       |
@@ -21,6 +22,7 @@ Where:
 |amount                |amount to be transferred       |
 
 **Note:** For testing purposes this application creates two users when initializing database as follows
+
 |Account number |Initial balance |
 |---------------|----------------|
 |0              |1000            |
